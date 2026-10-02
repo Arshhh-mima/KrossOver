@@ -1,0 +1,385 @@
+type UserProfile = 
+ record {
+   avatarUrl: text;
+   bio: text;
+   createdAt: int;
+   displayName: text;
+   id: UserId;
+   username: text;
+ };
+type UserId = principal;
+type StoryWithUser = 
+ record {
+   authorProfile: opt UserProfile;
+   story: Story;
+ };
+type StoryId = nat;
+type Story = 
+ record {
+   author: UserId;
+   caption: text;
+   createdAt: int;
+   id: StoryId;
+   imageUrl: text;
+   songArtist: opt text;
+   songTitle: opt text;
+ };
+type PostId = nat;
+type Post = 
+ record {
+   author: UserId;
+   caption: text;
+   createdAt: int;
+   hashtags: vec text;
+   id: PostId;
+   imageUrl: text;
+   imageUrls: vec text;
+   isReel: bool;
+   songArtist: opt text;
+   songTitle: opt text;
+ };
+type NotificationId = nat;
+type Notification = 
+ record {
+   createdAt: int;
+   fromUser: UserId;
+   id: NotificationId;
+   isRead: bool;
+   kind: text;
+   postId: opt PostId;
+   toUser: UserId;
+ };
+type NoteWithAuthor = 
+ record {
+   authorProfile: opt UserProfile;
+   likeCount: nat;
+   note: Note;
+ };
+type NoteAudience = 
+ variant {
+   CloseFriends;
+   MutualFollowers;
+ };
+type Note = 
+ record {
+   audience: NoteAudience;
+   author: UserId;
+   createdAt: int;
+   expiresAt: int;
+   "text": text;
+ };
+type MessageId = nat;
+type Message = 
+ record {
+   createdAt: int;
+   fromUser: UserId;
+   id: MessageId;
+   sharedPostId: opt PostId;
+   "text": text;
+   toUser: UserId;
+ };
+type HighlightId = nat;
+type Highlight = 
+ record {
+   coverUrl: text;
+   createdAt: int;
+   id: HighlightId;
+   owner: UserId;
+   storyIds: vec StoryId;
+   title: text;
+ };
+type DeviceInfo = 
+ record {
+   addedAt: int;
+   deviceId: text;
+   deviceLabel: text;
+   principalId: text;
+ };
+type ConversationSummary = 
+ record {
+   lastMessage: opt Message;
+   profile: opt UserProfile;
+   userId: UserId;
+ };
+type CommentId = nat;
+type Comment = 
+ record {
+   author: UserId;
+   createdAt: int;
+   id: CommentId;
+   postId: PostId;
+   "text": text;
+ };
+type ActivityStatus = 
+ record {
+   isOnline: bool;
+   lastSeen: int;
+ };
+service : {
+  addComment: (postId: PostId, "text": text) ->
+   (variant {
+      err: text;
+      ok: CommentId;
+    });
+  addQuestion: (storyId: text, questionText: text) ->
+   (variant {
+      err: text;
+      ok: text;
+    });
+  addReaction: (postId: PostId, emoji: text) -> (variant {
+                                                   err: text;
+                                                   ok;
+                                                 });
+  addStoryToHighlight: (highlightId: HighlightId, storyId: StoryId) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  addToCloseFriends: (userId: UserId) -> (variant {
+                                            err: text;
+                                            ok;
+                                          });
+  answerQuestion: (questionId: text, answer: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  authenticateWithPassword: (username: text, passwordHash: text) ->
+   (variant {
+      err: text;
+      ok: text;
+    }) query;
+  blockUser: (targetUserId: UserId) -> ();
+  createCarouselPost: (imageUrls: vec text, caption: text, hashtags:
+   vec text, songTitle: opt text, songArtist: opt text) ->
+   (variant {
+      err: text;
+      ok: PostId;
+    });
+  createHighlight: (title: text, coverUrl: text) ->
+   (variant {
+      err: text;
+      ok: HighlightId;
+    });
+  createNote: (content: text, audience: NoteAudience) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  createPoll: (storyId: text, question: text, options: vec text) ->
+   (variant {
+      err: text;
+      ok: text;
+    });
+  createPost: (imageUrl: text, caption: text, hashtags: vec text, songTitle:
+   opt text, songArtist: opt text, isReel: bool) ->
+   (variant {
+      err: text;
+      ok: PostId;
+    });
+  createProfile: (username: text, displayName: text, bio: text, avatarUrl:
+   text) -> (variant {
+               err: text;
+               ok;
+             });
+  createQuestion: (storyId: text, questionText: text) ->
+   (variant {
+      err: text;
+      ok: text;
+    });
+  createStory: (imageUrl: text, caption: text, songTitle: opt text,
+   songArtist: opt text) -> (variant {
+                               err: text;
+                               ok: StoryId;
+                             });
+  deleteHighlight: (id: HighlightId) -> (variant {
+                                           err: text;
+                                           ok;
+                                         });
+  deleteNote: () -> (variant {
+                       err: text;
+                       ok;
+                     });
+  downloadFile: (_fileId: text) -> (variant {
+                                      err: text;
+                                      ok: blob;
+                                    }) query;
+  followUser: (target: UserId) -> (variant {
+                                     err: text;
+                                     ok;
+                                   });
+  getActiveStories: () -> (vec StoryWithUser) query;
+  getActivityStatus: (userId: UserId) -> (ActivityStatus) query;
+  getActivityStatusBatch: (userIds: vec UserId) ->
+   (vec record {
+          UserId;
+          ActivityStatus;
+        }) query;
+  getAllSetways: () -> (vec text) query;
+  getAllUsers: () -> (vec UserProfile) query;
+  getBlockedUsers: () -> (vec UserId) query;
+  getCloseFriends: () -> (vec UserProfile) query;
+  getCommentLikes: (postId: PostId, commentId: nat) -> (nat) query;
+  getComments: (postId: PostId) -> (vec Comment) query;
+  getConversation: (otherUserId: UserId) -> (vec Message) query;
+  getConversationList: () -> (vec ConversationSummary) query;
+  getExploreFeed: () -> (vec Post) query;
+  getFollowers: (uid: UserId) -> (vec UserProfile) query;
+  getFollowersNotes: () -> (vec NoteWithAuthor) query;
+  getFollowing: (uid: UserId) -> (vec UserProfile) query;
+  getHighlights: (uid: UserId) -> (vec Highlight) query;
+  getHomeFeed: () -> (vec Post) query;
+  getLikeCount: (postId: PostId) -> (nat) query;
+  getMutedUsers: () -> (vec UserId) query;
+  getMyDevices: () -> (vec DeviceInfo) query;
+  getMyNote: () -> (opt Note) query;
+  getMyProfile: () -> (opt UserProfile) query;
+  getMyPushToken: () -> (opt text) query;
+  getNoteLikes: (authorId: UserId) -> (vec principal) query;
+  getNotifications: () -> (vec Notification) query;
+  getPasswordUserPrincipal: (username: text) -> (opt text) query;
+  getPinnedPosts: (uid: UserId) -> (vec Post) query;
+  getPollResults: (pollId: text) ->
+   (opt
+     record {
+       options: vec text;
+       question: text;
+       userVote: opt nat;
+       votes: vec nat;
+     }) query;
+  getPost: (id: PostId) -> (opt Post) query;
+  getPostImages: (postId: PostId) -> (vec text) query;
+  getPostsByUser: (uid: UserId) -> (vec Post) query;
+  getProfile: (uid: UserId) -> (opt UserProfile) query;
+  getProfileByUsername: (username: text) -> (opt UserProfile) query;
+  getQuestionAnswers: (questionId: text) ->
+   (vec record {
+          answer: text;
+          answerer: text;
+          timestamp: int;
+        }) query;
+  getReactions: (postId: PostId) -> (vec record {
+                                           text;
+                                           nat;
+                                         }) query;
+  getReelsFeed: (limit: nat, offset: nat) -> (vec Post) query;
+  getSavedPosts: () -> (vec Post) query;
+  getStories: (uid: UserId) -> (vec Story) query;
+  getStory: (storyId: StoryId) -> (opt Story) query;
+  getTrendingHashtags: (limit: nat) -> (vec record {
+                                              text;
+                                              nat;
+                                            }) query;
+  isBlocked: (targetUserId: UserId) -> (bool) query;
+  isCloseFriend: (userId: UserId) -> (bool) query;
+  isCommentLiked: (postId: PostId, commentId: nat) -> (bool) query;
+  isDeviceRegistered: (deviceId: text) -> (bool) query;
+  isFollowing: (target: UserId) -> (bool) query;
+  isLiked: (postId: PostId) -> (bool) query;
+  isMuted: (targetUserId: UserId) -> (bool) query;
+  likeComment: (postId: PostId, commentId: nat) -> (variant {
+                                                      err: text;
+                                                      ok;
+                                                    });
+  likeNote: (authorId: UserId) -> (variant {
+                                     err: text;
+                                     ok;
+                                   });
+  markNotificationsRead: () -> (variant {
+                                  err: text;
+                                  ok;
+                                });
+  muteUser: (targetUserId: UserId) -> ();
+  pinPost: (postId: PostId) -> (variant {
+                                  err: text;
+                                  ok;
+                                });
+  registerDevice: (deviceId: text, deviceLabel: text) -> (bool);
+  registerPushToken: (token: text) -> ();
+  registerWithPassword: (username: text, passwordHash: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  removeDevice: (deviceId: text) -> (bool);
+  removeFromCloseFriends: (userId: UserId) -> (variant {
+                                                 err: text;
+                                                 ok;
+                                               });
+  removeReaction: (postId: PostId) -> (variant {
+                                         err: text;
+                                         ok;
+                                       });
+  removeStoryFromHighlight: (highlightId: HighlightId, storyId: StoryId) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  replyToNote: (authorId: UserId, replyText: text) ->
+   (variant {
+      err: text;
+      ok: MessageId;
+    });
+  searchByHashtag: (hashtag: text) -> (vec Post) query;
+  searchUsers: (q: text) -> (vec UserProfile) query;
+  sendMessage: (recipientId: UserId, content: text, sharedPostId:
+   opt PostId) -> (variant {
+                     err: text;
+                     ok: MessageId;
+                   });
+  toggleLike: (postId: PostId) -> (variant {
+                                     err: text;
+                                     ok: bool;
+                                   });
+  toggleSave: (postId: PostId) -> (variant {
+                                     err: text;
+                                     ok: bool;
+                                   });
+  unblockUser: (targetUserId: UserId) -> ();
+  unfollowUser: (target: UserId) -> (variant {
+                                       err: text;
+                                       ok;
+                                     });
+  unlikeComment: (postId: PostId, commentId: nat) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  unlikeNote: (authorId: UserId) -> (variant {
+                                       err: text;
+                                       ok;
+                                     });
+  unmuteUser: (targetUserId: UserId) -> ();
+  unpinPost: (postId: PostId) -> (variant {
+                                    err: text;
+                                    ok;
+                                  });
+  unregisterPushToken: () -> ();
+  updateActivityStatus: () -> (variant {
+                                 err: text;
+                                 ok;
+                               });
+  updateHighlight: (id: HighlightId, title: text, coverUrl: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  updateProfile: (displayName: text, bio: text, avatarUrl: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  uploadFile: (_name: text, _mime: text, _data: blob) ->
+   (variant {
+      err: text;
+      ok: text;
+    });
+  viewStory: (storyId: StoryId) -> (variant {
+                                      err: text;
+                                      ok;
+                                    });
+  votePoll: (pollId: text, optionIndex: nat) -> (variant {
+                                                   err: text;
+                                                   ok;
+                                                 });
+}

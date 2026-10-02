@@ -1,0 +1,94 @@
+type UserProfile = 
+ record {
+   avatarUrl: text;
+   bio: text;
+   createdAt: int;
+   displayName: text;
+   id: UserId;
+   username: text;
+ };
+type UserId = principal;
+type StoryId = nat;
+type Story = 
+ record {
+   author: UserId;
+   caption: text;
+   createdAt: int;
+   id: StoryId;
+   imageUrl: text;
+ };
+type PostId = nat;
+type Post = 
+ record {
+   author: UserId;
+   caption: text;
+   createdAt: int;
+   hashtags: vec text;
+   id: PostId;
+   imageUrl: text;
+ };
+type NotificationId = nat;
+type Notification = 
+ record {
+   createdAt: int;
+   fromUser: UserId;
+   id: NotificationId;
+   isRead: bool;
+   kind: text;
+   postId: opt PostId;
+   toUser: UserId;
+ };
+type MessageId = nat;
+type Message = 
+ record {
+   createdAt: int;
+   fromUser: UserId;
+   id: MessageId;
+   "text": text;
+   toUser: UserId;
+ };
+type CommentId = nat;
+type Comment = 
+ record {
+   author: UserId;
+   createdAt: int;
+   id: CommentId;
+   postId: PostId;
+   "text": text;
+ };
+service : {
+  addComment: (postId: PostId, "text": text) -> (CommentId);
+  createPost: (imageUrl: text, caption: text, hashtags: vec text) -> (PostId);
+  createProfile: (username: text, displayName: text, bio: text, avatarUrl:
+   text) -> (bool);
+  createStory: (imageUrl: text, caption: text) -> (StoryId);
+  followUser: (target: UserId) -> ();
+  getActiveStories: () -> (vec Story) query;
+  getAllUsers: () -> (vec UserProfile) query;
+  getComments: (postId: PostId) -> (vec Comment) query;
+  getConversation: (uid1: UserId, uid2: UserId) -> (vec Message) query;
+  getConversationList: (uid: UserId) -> (vec UserId) query;
+  getExploreFeed: () -> (vec Post) query;
+  getFollowers: (uid: UserId) -> (vec UserId) query;
+  getFollowing: (uid: UserId) -> (vec UserId) query;
+  getHomeFeed: (uid: UserId) -> (vec Post) query;
+  getLikeCount: (postId: PostId) -> (nat) query;
+  getMyProfile: () -> (opt UserProfile) query;
+  getNotifications: (uid: UserId) -> (vec Notification) query;
+  getPost: (id: PostId) -> (opt Post) query;
+  getPostsByUser: (uid: UserId) -> (vec Post) query;
+  getProfile: (uid: UserId) -> (opt UserProfile) query;
+  getProfileByUsername: (username: text) -> (opt UserProfile) query;
+  getSavedPosts: (uid: UserId) -> (vec Post) query;
+  isFollowing: (follower: UserId, target: UserId) -> (bool) query;
+  isLiked: (postId: PostId, uid: UserId) -> (bool) query;
+  markNotificationsRead: () -> ();
+  searchByHashtag: (tag: text) -> (vec Post) query;
+  searchUsers: (q: text) -> (vec UserProfile) query;
+  sendMessage: (toUser: UserId, "text": text) -> (MessageId);
+  toggleLike: (postId: PostId) -> (bool);
+  toggleSave: (postId: PostId) -> (bool);
+  unfollowUser: (target: UserId) -> ();
+  updateProfile: (displayName: text, bio: text, avatarUrl: text) -> (bool);
+  viewStory: (storyId: StoryId) -> ();
+}

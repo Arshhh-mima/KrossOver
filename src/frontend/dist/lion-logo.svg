@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="mane" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fa7e1e"/>
+      <stop offset="50%" stop-color="#d62976"/>
+      <stop offset="100%" stop-color="#962fbf"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e8a85a"/>
+      <stop offset="100%" stop-color="#c47c30"/>
+    </linearGradient>
+    <linearGradient id="eyeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#f0a500"/>
+    </linearGradient>
+  </defs>
+  <!-- Mane outer glow -->
+  <ellipse cx="50" cy="52" rx="42" ry="44" fill="url(#mane)" opacity="0.9"/>
+  <!-- Mane inner -->
+  <ellipse cx="50" cy="51" rx="36" ry="38" fill="url(#mane)" opacity="0.6"/>
+  <!-- Face -->
+  <ellipse cx="50" cy="50" rx="28" ry="30" fill="url(#face)"/>
+  <!-- Forehead fur tufts -->
+  <ellipse cx="40" cy="24" rx="6" ry="9" fill="#c47c30" transform="rotate(-15 40 24)"/>
+  <ellipse cx="50" cy="22" rx="5" ry="8" fill="#c47c30"/>
+  <ellipse cx="60" cy="24" rx="6" ry="9" fill="#c47c30" transform="rotate(15 60 24)"/>
+  <!-- Ear left -->
+  <ellipse cx="26" cy="30" rx="9" ry="11" fill="url(#mane)"/>
+  <ellipse cx="26" cy="30" rx="5" ry="7" fill="#d4925a"/>
+  <!-- Ear right -->
+  <ellipse cx="74" cy="30" rx="9" ry="11" fill="url(#mane)"/>
+  <ellipse cx="74" cy="30" rx="5" ry="7" fill="#d4925a"/>
+  <!-- Eyes -->
+  <ellipse cx="39" cy="47" rx="7" ry="6" fill="#1a1a1a"/>
+  <ellipse cx="61" cy="47" rx="7" ry="6" fill="#1a1a1a"/>
+  <ellipse cx="39" cy="47" rx="5" ry="4.5" fill="url(#eyeGrad)"/>
+  <ellipse cx="61" cy="47" rx="5" ry="4.5" fill="url(#eyeGrad)"/>
+  <circle cx="39" cy="47" r="2.5" fill="#1a1a1a"/>
+  <circle cx="61" cy="47" r="2.5" fill="#1a1a1a"/>
+  <circle cx="40.5" cy="45.5" r="1" fill="white" opacity="0.8"/>
+  <circle cx="62.5" cy="45.5" r="1" fill="white" opacity="0.8"/>
+  <!-- Nose -->
+  <ellipse cx="50" cy="56" rx="5" ry="4" fill="#8b3a52"/>
+  <ellipse cx="50" cy="55" rx="4" ry="2.5" fill="#b04a68"/>
+  <!-- Nostrils -->
+  <ellipse cx="47" cy="57" rx="1.5" ry="1" fill="#6a2a3f"/>
+  <ellipse cx="53" cy="57" rx="1.5" ry="1" fill="#6a2a3f"/>
+  <!-- Mouth -->
+  <path d="M50 60 Q44 65 40 63" stroke="#8b3a52" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M50 60 Q56 65 60 63" stroke="#8b3a52" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Whisker dots -->
+  <circle cx="34" cy="58" r="1" fill="#a06840" opacity="0.7"/>
+  <circle cx="38" cy="60" r="1" fill="#a06840" opacity="0.7"/>
+  <circle cx="33" cy="62" r="1" fill="#a06840" opacity="0.7"/>
+  <circle cx="66" cy="58" r="1" fill="#a06840" opacity="0.7"/>
+  <circle cx="62" cy="60" r="1" fill="#a06840" opacity="0.7"/>
+  <circle cx="67" cy="62" r="1" fill="#a06840" opacity="0.7"/>
+</svg>

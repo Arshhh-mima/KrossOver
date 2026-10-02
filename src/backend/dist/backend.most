@@ -1,0 +1,308 @@
+// Version: 1.0.0
+type CommentId__265911312 = Nat;
+type Comment__473346131 =
+  {
+    author : UserId__313180070;
+    createdAt : Int;
+    id : CommentId__265911312;
+    postId : PostId__254971760;
+    text : Text
+  };
+type Data__159895909<T> = {var count : Nat__490723111; elements : [var ?T]};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type DeviceInfo__1010900762 =
+  {addedAt : Int; deviceId : Text; deviceLabel : Text; principalId : Text};
+type HighlightId__812748305 = Nat;
+type Highlight__396516253 =
+  {
+    coverUrl : Text;
+    createdAt : Int;
+    id : HighlightId__812748305;
+    owner : UserId__313180070;
+    storyIds : [StoryId__354670902];
+    title : Text
+  };
+type Internal__667636161<T> =
+  {children : [var ?Node__92254746<T>]; data : Data__159895909<T>};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__520550824<T> = {data : Data__159895909<T>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type MessageId__147617357 = Nat;
+type Message__19119041 =
+  {
+    createdAt : Int;
+    fromUser : UserId__313180070;
+    id : MessageId__147617357;
+    sharedPostId : ?PostId__254971760;
+    text : Text;
+    toUser : UserId__313180070
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type Node__92254746<T> =
+  {#internal : Internal__667636161<T>; #leaf : Leaf__520550824<T>};
+type NoteAudience__480867850 = {#CloseFriends; #MutualFollowers};
+type Note__74666102 =
+  {
+    audience : NoteAudience__480867850;
+    author : UserId__313180070;
+    createdAt : Int;
+    expiresAt : Int;
+    text : Text
+  };
+type NotificationId__65415016 = Nat;
+type Notification__879889657 =
+  {
+    createdAt : Int;
+    fromUser : UserId__313180070;
+    id : NotificationId__65415016;
+    isRead : Bool;
+    kind : Text;
+    postId : ?PostId__254971760;
+    toUser : UserId__313180070
+  };
+type PasswordUser__444006703 = {passwordHash : Text; principalText : Text};
+type Poll__155064526 =
+  {
+    createdAt : Int;
+    createdBy : UserId__313180070;
+    id : Text;
+    options : [Text];
+    question : Text;
+    storyId : Text
+  };
+type PostId__254971760 = Nat;
+type Post__955439577 =
+  {
+    author : UserId__313180070;
+    caption : Text;
+    createdAt : Int;
+    hashtags : [Text];
+    id : PostId__254971760;
+    imageUrl : Text;
+    imageUrls : [Text];
+    isReel : Bool;
+    songArtist : ?Text;
+    songTitle : ?Text
+  };
+type QuestionAnswer__52330548 =
+  {answer : Text; answerer : Text; timestamp : Int};
+type QuestionSticker__970839848 =
+  {
+    createdAt : Int;
+    createdBy : UserId__313180070;
+    id : Text;
+    questionText : Text;
+    storyId : Text
+  };
+type Set__532252804<T> = Set__710576254<T>;
+type Set__710576254<T> =
+  {var root : Node__92254746<T>; var size : Nat__490723111};
+type StoryId__354670902 = Nat;
+type Story__270542992 =
+  {
+    author : UserId__313180070;
+    caption : Text;
+    createdAt : Int;
+    id : StoryId__354670902;
+    imageUrl : Text;
+    songArtist : ?Text;
+    songTitle : ?Text
+  };
+type UserId__313180070 = Principal;
+type UserProfile__491224006 =
+  {
+    avatarUrl : Text;
+    bio : Text;
+    createdAt : Int;
+    displayName : Text;
+    id : UserId__313180070;
+    username : Text
+  };
+actor {
+  stable activityStatus :
+    {
+      var root : Node__46230540<UserId__313180070, Int>;
+      var size : Nat__490723111
+    };
+  stable blockedUsers :
+    {
+      var root :
+        Node__46230540<UserId__313180070, Set__532252804<UserId__313180070>>;
+      var size : Nat__490723111
+    };
+  stable closeFriends :
+    {
+      var root :
+        Node__46230540<UserId__313180070, Set__532252804<UserId__313180070>>;
+      var size : Nat__490723111
+    };
+  stable commentLikes :
+    {
+      var root : Node__46230540<Text, Set__532252804<UserId__313180070>>;
+      var size : Nat__490723111
+    };
+  stable comments :
+    {
+      var root : Node__46230540<CommentId__265911312, Comment__473346131>;
+      var size : Nat__490723111
+    };
+  stable follows :
+    {
+      var root :
+        Node__46230540<UserId__313180070, Set__532252804<UserId__313180070>>;
+      var size : Nat__490723111
+    };
+  stable hashtagCounts :
+    {var root : Node__46230540<Text, Nat>; var size : Nat__490723111};
+  stable highlights :
+    {
+      var root : Node__46230540<HighlightId__812748305, Highlight__396516253>;
+      var size : Nat__490723111
+    };
+  stable likes :
+    {
+      var root :
+        Node__46230540<PostId__254971760, Set__532252804<UserId__313180070>>;
+      var size : Nat__490723111
+    };
+  stable messages :
+    {
+      var root : Node__46230540<MessageId__147617357, Message__19119041>;
+      var size : Nat__490723111
+    };
+  stable mutedUsers :
+    {
+      var root :
+        Node__46230540<UserId__313180070, Set__532252804<UserId__313180070>>;
+      var size : Nat__490723111
+    };
+  stable var nextCommentId : Nat;
+  stable var nextHighlightId : Nat;
+  stable var nextMessageId : Nat;
+  stable var nextNotifId : Nat;
+  stable var nextPollId : Nat;
+  stable var nextPostId : Nat;
+  stable var nextQuestionId : Nat;
+  stable var nextStoryId : Nat;
+  stable noteLikes :
+    {
+      var root :
+        Node__46230540<UserId__313180070, Set__532252804<UserId__313180070>>;
+      var size : Nat__490723111
+    };
+  stable notes :
+    {
+      var root : Node__46230540<UserId__313180070, Note__74666102>;
+      var size : Nat__490723111
+    };
+  stable notifications :
+    {
+      var root :
+        Node__46230540<NotificationId__65415016, Notification__879889657>;
+      var size : Nat__490723111
+    };
+  stable onlineThreshold : Int;
+  stable passwordUsers :
+    {
+      var root : Node__46230540<Text, PasswordUser__444006703>;
+      var size : Nat__490723111
+    };
+  stable pinnedPosts :
+    {
+      var root : Node__46230540<UserId__313180070, [PostId__254971760]>;
+      var size : Nat__490723111
+    };
+  stable pollVotes :
+    {
+      var root : Node__46230540<Text, Map__605269027<UserId__313180070, Nat>>;
+      var size : Nat__490723111
+    };
+  stable polls :
+    {
+      var root : Node__46230540<Text, Poll__155064526>;
+      var size : Nat__490723111
+    };
+  stable posts :
+    {
+      var root : Node__46230540<PostId__254971760, Post__955439577>;
+      var size : Nat__490723111
+    };
+  stable profiles :
+    {
+      var root : Node__46230540<UserId__313180070, UserProfile__491224006>;
+      var size : Nat__490723111
+    };
+  stable pushTokens :
+    {
+      var root : Node__46230540<UserId__313180070, Text>;
+      var size : Nat__490723111
+    };
+  stable questionAnswers :
+    {
+      var root : Node__46230540<Text, [QuestionAnswer__52330548]>;
+      var size : Nat__490723111
+    };
+  stable questions :
+    {
+      var root : Node__46230540<Text, QuestionSticker__970839848>;
+      var size : Nat__490723111
+    };
+  stable reactions :
+    {
+      var root :
+        Node__46230540<PostId__254971760,
+                        Map__605269027<Text,
+                                        Set__532252804<UserId__313180070>>>;
+      var size : Nat__490723111
+    };
+  stable saves :
+    {
+      var root :
+        Node__46230540<UserId__313180070, Set__532252804<PostId__254971760>>;
+      var size : Nat__490723111
+    };
+  stable stories :
+    {
+      var root : Node__46230540<StoryId__354670902, Story__270542992>;
+      var size : Nat__490723111
+    };
+  stable storyViews :
+    {
+      var root :
+        Node__46230540<StoryId__354670902, Set__532252804<UserId__313180070>>;
+      var size : Nat__490723111
+    };
+  stable userDevices :
+    {
+      var root :
+        Node__46230540<UserId__313180070,
+                        Map__605269027<Text, DeviceInfo__1010900762>>;
+      var size : Nat__490723111
+    };
+  stable userHighlights :
+    {
+      var root : Node__46230540<UserId__313180070, [HighlightId__812748305]>;
+      var size : Nat__490723111
+    };
+  stable userReactions :
+    {
+      var root :
+        Node__46230540<PostId__254971760,
+                        Map__605269027<UserId__313180070, Text>>;
+      var size : Nat__490723111
+    };
+  stable usernameIndex :
+    {
+      var root : Node__46230540<Text, UserId__313180070>;
+      var size : Nat__490723111
+    }
+};

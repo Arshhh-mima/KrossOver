@@ -1,0 +1,36 @@
+{
+  "overview": "KrossOver is a full-featured Instagram clone with dark mode, real-time social features, PWA support, and Internet Identity authentication. All features are real — no fake data, no placeholder content.",
+  "features": [
+    "Photo and video posts with captions and hashtags",
+    "Stories with 24-hour expiry and highlights",
+    "Reels (short video content)",
+    "Direct messages with post sharing",
+    "Notes (60-character status messages)",
+    "Close Friends list",
+    "Follow/unfollow with real counts",
+    "Likes, comments, saves/bookmarks",
+    "Home feed from followed users",
+    "Explore and discover page",
+    "Search by users and hashtags",
+    "Notifications for likes, comments, follows",
+    "Activity status (online/last seen)",
+    "Pinned posts on profile",
+    "Carousel posts (multiple images)",
+    "PWA support for Android installation",
+    "Lion logo branding",
+    "Dark mode UI"
+  ],
+  "category": "social",
+  "tags": [
+    "social",
+    "instagram-clone",
+    "dark-mode",
+    "pwa",
+    "photos",
+    "videos",
+    "reels",
+    "stories",
+    "messaging"
+  ],
+  "last_updated": "2026-04-22T16:05:13.518Z"
+}
